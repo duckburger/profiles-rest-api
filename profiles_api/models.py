@@ -15,14 +15,18 @@ class UserProfileManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, name=name)
 
-        user.set_password(password) """This makes sure the password is encrypted"""
-        user.save(using=self._db) """Makes sure this supports several database types"""
+        """This makes sure the password is encrypted"""
+        user.set_password(password)
+        """Makes sure this supports several database types"""
+        user.save(using=self._db)
 
         return user
 
     def create_super_user(self, email, name, password):
         """Create and save a new superuser with given details"""
-        user = self.create_user(email, name, password) """Self is automatically passed in"""
+
+        """Self is automatically passed in"""
+        user = self.create_user(email, name, password)
 
         user.is_superuser = True
         user.is_staff = True
@@ -37,7 +41,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
-    is_staff = model.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
 
     objects = UserProfileManager()
 
